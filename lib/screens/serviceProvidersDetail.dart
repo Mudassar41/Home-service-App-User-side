@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:user_side/animations/alertDialogAnimation.dart';
@@ -8,10 +9,12 @@ import 'createOffer.dart';
 
 class ServiceProvidersDetailScreen extends StatelessWidget {
   ProvidersData data;
+
   ServiceProvidersDetailScreen({this.data});
 
   @override
   Widget build(BuildContext context) {
+   // print(data.serviceprovidersdatas.id);
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -23,16 +26,24 @@ class ServiceProvidersDetailScreen extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Container(
+                  CachedNetworkImage(
+                    imageUrl: data.shopImage,
+                    imageBuilder: (context, imageProvider) => Container(
                       height: 250,
+                      // width: Screensize.widthMultiplier * 40,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(5),
-                          ),
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  'http://192.168.43.31:4000/${data.shopImage}'),
-                              fit: BoxFit.cover))),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    placeholder: (context, url) =>
+                        Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) =>
+                        Center(child: Icon(Icons.error)),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 200),
                     child: Center(
@@ -82,7 +93,7 @@ class ServiceProvidersDetailScreen extends StatelessWidget {
                         OutlinedButton(
                           onPressed: () {
                             // openDialogForOffer(context);
-                            Get.to(CreateOfferScreen());
+                            Get.to(CreateOfferScreen(providerInfo: data));
                           },
                           child: Text(
                             "Send Offer",
@@ -312,36 +323,36 @@ class ServiceProvidersDetailScreen extends StatelessWidget {
     );
   }
 
-  // Future<void> openDialogForOffer(BuildContext context) async {
-  //   showGeneralDialog(
-  //       context: context,
-  //       pageBuilder: (context, anim1, anim2) {},
-  //       barrierDismissible: false,
-  //       barrierColor: Colors.black.withOpacity(0.4),
-  //       barrierLabel: '',
-  //       transitionBuilder: (context, anim1, anim2, child) {
-  //         return Transform.scale(
-  //             scale: anim1.value,
-  //             child: AlertDialog(
-  //               title: Text('Create Offer'),
-  //               content: SingleChildScrollView(
-  //                 child: ListBody(
-  //                   children: <Widget>[
-  //                     Text('Create Offer'),
-  //                     Text('Would you like to approve of this message?'),
-  //                   ],
-  //                 ),
-  //               ),
-  //               actions: <Widget>[
-  //                 TextButton(
-  //                   child: Text('Cancel'),
-  //                   onPressed: () {
-  //                     Navigator.of(context).pop();
-  //                   },
-  //                 ),
-  //               ],
-  //             ));
-  //       },
-  //       transitionDuration: Duration(milliseconds: 200));
-  // }
+// Future<void> openDialogForOffer(BuildContext context) async {
+//   showGeneralDialog(
+//       context: context,
+//       pageBuilder: (context, anim1, anim2) {},
+//       barrierDismissible: false,
+//       barrierColor: Colors.black.withOpacity(0.4),
+//       barrierLabel: '',
+//       transitionBuilder: (context, anim1, anim2, child) {
+//         return Transform.scale(
+//             scale: anim1.value,
+//             child: AlertDialog(
+//               title: Text('Create Offer'),
+//               content: SingleChildScrollView(
+//                 child: ListBody(
+//                   children: <Widget>[
+//                     Text('Create Offer'),
+//                     Text('Would you like to approve of this message?'),
+//                   ],
+//                 ),
+//               ),
+//               actions: <Widget>[
+//                 TextButton(
+//                   child: Text('Cancel'),
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                   },
+//                 ),
+//               ],
+//             ));
+//       },
+//       transitionDuration: Duration(milliseconds: 200));
+// }
 }

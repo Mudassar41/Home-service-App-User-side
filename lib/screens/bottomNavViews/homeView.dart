@@ -172,7 +172,7 @@ class _HomeViewState extends State<HomeView> {
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: Image.network(
-                                    'http://192.168.43.31:4000/${categoriesList[index].providerCatImage}',
+                                    'http://192.168.43.113:4000/${categoriesList[index].providerCatImage}',
                                     height: 50,
                                     width: 50,
                                   ),
@@ -225,7 +225,7 @@ class _HomeViewState extends State<HomeView> {
       });
     tempList = [];
     final response =
-        await http.get(Uri.parse('http://192.168.43.31:4000/getCats'));
+        await http.get(Uri.parse('http://192.168.43.113:4000/getCats'));
     if (response.statusCode == 201) {
       var value = jsonDecode(response.body);
       var data = value['data'];
@@ -246,11 +246,12 @@ class _HomeViewState extends State<HomeView> {
 
   getProvidercurrentlocation() {
     location.onLocationChanged.listen((LocationData currentLocation) {
+      if(mounted)
       setState(() {
         lat = currentLocation.latitude;
         lan = currentLocation.longitude;
       });
-      print(lat);
+    //  print(lat);
     });
   }
 }

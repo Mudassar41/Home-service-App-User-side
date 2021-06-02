@@ -50,4 +50,18 @@ class ProvidersData {
         latitude: json["latitude"],
         shopName: json["shopName"],
       );
+  factory ProvidersData.fromJson1(Map<String, dynamic> json) => ProvidersData(
+    id: json["_id"],
+    shopImage: json["shopImage"],
+    address: json["address"],
+    whFromTime: json["whFromTime"],
+    whFromTimeType: json["whFromTimeType"],
+    whToTime: json["whToTime"],
+    whToTimeType: json["whToTimeType"],
+    wsFrom: json["wsFrom"],
+    wsTo: json["wsTo"],
+    longitude: json["longitude"],
+    latitude: json["latitude"],
+    shopName: json["shopName"],
+  );
 }
