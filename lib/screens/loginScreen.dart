@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -25,6 +26,9 @@ class _LoginScreenState extends State<LoginScreen> {
   ApiServices apiServices = ApiServices();
   SharePrefService service = SharePrefService();
   ProgressDialog progressDialog;
+  dynamic countryCode = '+92';
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     progressDialog = ProgressDialog(context,
@@ -46,25 +50,64 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 25, right: 25, top: 8, bottom: 2),
-                    child: Container(
-                      height: Sizing.heightMultiplier * 7,
-                      width: MediaQuery.of(context).size.width,
-                      child: TextFormField(
-                        keyboardType: TextInputType.phone,
-                        cursorColor: CustomColors.lightGreen,
-                        textInputAction: TextInputAction.next,
-                        decoration: FormFieldDesign.inputDecoration(
-                            'Phone no', Icons.phone_android_outlined),
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return 'Phone no required';
-                          }
-                          return null;
-                        },
-                        onSaved: (String value) {
-                          user.phoneNumber = value;
-                        },
+                    child: TextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: phoneNumberController,
+                      keyboardType: TextInputType.phone,
+                      cursorColor: CustomColors.lightGreen,
+                      textInputAction: TextInputAction.done,
+                      decoration: InputDecoration(
+                        focusedErrorBorder: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            borderSide:
+                            new BorderSide(color: CustomColors.lightGreen)),
+                        errorBorder: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            borderSide:
+                            new BorderSide(color: CustomColors.lightGreen)),
+                        enabledBorder: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            borderSide:
+                            new BorderSide(color: CustomColors.lightGreen)),
+                        focusedBorder: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            borderSide:
+                            new BorderSide(color: CustomColors.lightGreen)),
+                        labelText: 'Phone no',
+                        labelStyle: TextStyle(color: Colors.grey),
+                        suffixIcon: Icon(
+                          Icons.phone_android_outlined,
+                          color: Colors.grey,
+                        ),
+                        prefixIcon: CountryCodePicker(
+                          onChanged: (CountryCode cC) {
+                            setState(() {
+                              countryCode = cC;
+                            });
+                          },
+                          // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                          initialSelection: 'PK',
+                          favorite: ['+92', 'PK'],
+                          // optional. Shows only country name and flag
+                          showCountryOnly: false,
+
+                          showFlagDialog: true,
+
+                          // optional. Shows only country name and flag when popup is closed.
+                          showOnlyCountryWhenClosed: false,
+                          // optional. aligns the flag and the Text left
+                          alignLeft: false,
+                        ),
                       ),
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'Phone no required';
+                        }
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        user.phoneNumber = value;
+                      },
                     ),
                   ),
                   Padding(
@@ -131,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             } else {
                               formKey1.currentState.save();
                               String res = await apiServices.loginUser(
-                                  user, progressDialog);
+                                  user, progressDialog,countryCode);
                               if (res == 'Data Exist') {
                                 CustomSnackBar.showSnackBar(
                                     'Login Success', context);

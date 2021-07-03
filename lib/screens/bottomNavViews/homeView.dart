@@ -1,54 +1,63 @@
 import 'dart:convert';
 import 'package:flutter_grid_delegate_ext/rendering/grid_delegate.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/state_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:user_side/animations/rotationAnimation.dart';
 import 'package:user_side/models/categories.dart';
 import 'package:user_side/utils/customColors.dart';
 import 'package:get/get.dart';
 import 'package:user_side/utils/sizing.dart';
 import 'package:user_side/widgets/loadingBar.dart';
-import 'package:user_side/screens/serviceProvidersScreen.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:user_side/stateManagment/controllers/serviceProvidersController.dart';
-import 'package:location/location.dart';
+
+import '../serviceProvidersScreen.dart';
 
 class HomeView extends StatefulWidget {
   @override
   _HomeViewState createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
-  var location = new Location();
-  LocationData _locationData;
+class _HomeViewState extends State<HomeView>
+    with AutomaticKeepAliveClientMixin {
   var lat;
   var lan;
-  Position _currentPosition;
   bool value = true;
   FocusNode focusNode;
+  Future location;
+  String str = "Loading...";
+  Position position;
   TextEditingController searchController = TextEditingController();
   dynamic selectedcategory;
   List<Providercategories> categoriesList = <Providercategories>[];
   List<Providercategories> tempList = <Providercategories>[];
   bool isLoading = false;
+  ProgressDialog progressDialog;
   final ServiceProviderController serviceProviderController =
       Get.put(ServiceProviderController());
+  bool showDialogue = true;
 
   @override
   void initState() {
+    // getCurrentPosition();
     getFilterData();
-    getProvidercurrentlocation();
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    progressDialog = ProgressDialog(context,
+        type: ProgressDialogType.Normal, isDismissible: false);
     return category();
   }
 
   Widget category() {
-    return Column(children: [
+    return Column(
+
+        children: [
       Padding(
         padding: const EdgeInsets.only(left: 15, right: 15, top: 8, bottom: 8),
         child: Align(
@@ -132,14 +141,22 @@ class _HomeViewState extends State<HomeView> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(5))),
                         child: InkWell(
-                          onTap: () {
-                            // location.onLocationChanged
-                            //     .listen((LocationData currentLocation) {
+                          onTap: () async {
+                            progressDialog.style(
+                                progressWidget: RotationAnimation(20, 20),
+                                message: 'Please wait getting Current Location',
+                                messageTextStyle:
+                                    TextStyle(fontWeight: FontWeight.normal));
+                            progressDialog.show();
+                            position = await Geolocator.getCurrentPosition(
+                                desiredAccuracy: LocationAccuracy.high,
+                                forceAndroidLocationManager: true);
 
-                            //   // Use current location
-
-                            // });
-
+                            setState(() {
+                              lat = position.latitude.toDouble();
+                              lan = position.longitude.toDouble();
+                            });
+                            progressDialog.hide();
                             selectedcategory = categoriesList[index].id;
                             if (selectedcategory != null) {
                               serviceProviderController.catId.value =
@@ -158,12 +175,13 @@ class _HomeViewState extends State<HomeView> {
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                   colors: [
+                                    Colors.white,
                                     CustomColors.lightGreen,
                                     Colors.white
                                   ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.topRight),
-                              color: Colors.black12,
+                              color: Colors.white12,
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -172,7 +190,7 @@ class _HomeViewState extends State<HomeView> {
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: Image.network(
-                                    'http://192.168.43.113:4000/${categoriesList[index].providerCatImage}',
+                                    'http://192.168.18.100:4000/${categoriesList[index].providerCatImage}',
                                     height: 50,
                                     width: 50,
                                   ),
@@ -180,6 +198,7 @@ class _HomeViewState extends State<HomeView> {
                                 Center(
                                   child: Text(
                                     '${categoriesList[index].providerCatName[0].toUpperCase()}${categoriesList[index].providerCatName.toLowerCase().substring(1)}',
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Colors.black54,
                                         fontWeight: FontWeight.bold),
@@ -225,7 +244,7 @@ class _HomeViewState extends State<HomeView> {
       });
     tempList = [];
     final response =
-        await http.get(Uri.parse('http://192.168.43.113:4000/getCats'));
+        await http.get(Uri.parse('http://192.168.18.100:4000/getCats'));
     if (response.statusCode == 201) {
       var value = jsonDecode(response.body);
       var data = value['data'];
@@ -244,14 +263,46 @@ class _HomeViewState extends State<HomeView> {
       });
   }
 
-  getProvidercurrentlocation() {
-    location.onLocationChanged.listen((LocationData currentLocation) {
-      if(mounted)
-      setState(() {
-        lat = currentLocation.latitude;
-        lan = currentLocation.longitude;
-      });
-    //  print(lat);
+  getCurrentPosition() async {
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        forceAndroidLocationManager: true);
+
+    setState(() {
+      lat = position.latitude.toDouble();
+      lan = position.longitude.toDouble();
     });
   }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('AlertDialog Title'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('This is a demo alert dialog.'),
+                Text('Would you like to approve of this message?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Approve'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

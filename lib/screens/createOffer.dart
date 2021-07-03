@@ -26,6 +26,7 @@ class CreateOfferScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0.0,
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -95,8 +96,35 @@ class CreateOfferScreen extends StatelessWidget {
                         const EdgeInsets.only(left: 30, right: 30, top: 20),
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          border: Border.all(color: Colors.black26, width: 1)),
+                        border: Border.all(
+                          color: Colors.black12,
+                        ),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: controller.addressController,
+                          maxLines: 4,
+                          decoration: InputDecoration.collapsed(
+                            hintText: "Address Detail",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 30, right: 30, top: 20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black12,
+                        ),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
@@ -137,13 +165,14 @@ class CreateOfferScreen extends StatelessWidget {
                                     serviceProviderController,
                                     controller.priceEditController.text,
                                     controller.desEditController.text,
-                                    controller.time.value
-                                );
+                                    controller.addressController.text,
+                                    controller.time.value);
                             if (response == 'Offer Sent') {
-                              Get.back();
                               controller.priceEditController.clear();
                               controller.desEditController.clear();
-
+                              controller.addressController.clear();
+                              FocusScope.of(context).unfocus();
+                              Navigator.pop(context);
                               CustomToast.showToast(response);
                             } else {
                               CustomToast.showToast(response);

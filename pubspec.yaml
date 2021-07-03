@@ -33,9 +33,6 @@ dependencies:
   progress_dialog: ^1.2.4
   country_code_picker: ^2.0.1
   fluttertoast: ^8.0.3
-  google_maps_flutter: ^2.0.3
-  location: ^4.1.1
-  geolocator: ^7.0.3
   provider: ^5.0.0
   http: ^0.13.1
   awesome_dialog: ^2.0.0
@@ -43,7 +40,13 @@ dependencies:
   flutter_grid_delegate_ext: ^0.0.2
   get: ^4.1.4
   firebase_storage: ^8.1.0
+  uuid: ^3.0.4
   cached_network_image: ^3.0.0
+  flutter_rating_bar: ^4.0.0
+  geolocator: ^7.1.0
+  flutter_phone_direct_caller: ^2.0.0
+  image_picker: ^0.7.4
+  flutter_svg: ^0.22.0
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +68,8 @@ flutter:
      - assets/images/logo.gif
      - assets/images/logo.jpeg
      - assets/images/profile.jpg
+     - assets/images/no.svg
+     - assets/images/nop.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

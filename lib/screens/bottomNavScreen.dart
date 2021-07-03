@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:user_side/models/bottomNavItems.dart';
+import 'package:user_side/screens/bottomNavViews/inboxView.dart';
 import 'package:user_side/screens/bottomNavViews/tasksView.dart';
 import 'package:user_side/services/sharedPrefService.dart';
 import 'package:user_side/utils/customColors.dart';
 import 'bottomNavViews/homeView.dart';
+import 'bottomNavViews/settingView.dart';
 
 class NavScreen extends StatefulWidget {
   @override
@@ -12,17 +14,17 @@ class NavScreen extends StatefulWidget {
 
 class _NavPageState extends State<NavScreen> {
   List<BottomItems> bottomList = [
-    BottomItems('Home', Icons.home_filled),
-    BottomItems('Inbox', Icons.mail),
-    BottomItems('Tasks', Icons.task),
-    BottomItems('Settings', Icons.settings)
+    BottomItems('Home', Icons.home_outlined),
+    BottomItems('Inbox', Icons.mail_outline),
+    BottomItems('Bookings', Icons.task_outlined),
+    BottomItems('Profile', Icons.settings_outlined)
   ];
   int selectedIndex = 0;
   List<Widget> widgetsList = <Widget>[
     HomeView(),
-    HomeView(),
+    InboxView(),
     TasksView(),
-    HomeView(),
+    SettingView()
   ];
   PageController pageController = PageController();
   SharePrefService sharePrefService = SharePrefService();
@@ -32,18 +34,23 @@ class _NavPageState extends State<NavScreen> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'ProviderLance',
+          style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black45),
+        ),
         actions: [
           IconButton(
               onPressed: () {},
               icon: Icon(
-                Icons.notifications,
+                Icons.notifications_none_outlined,
               )),
-          IconButton(
-              onPressed: () {
-                sharePrefService.updateBoolSp();
-                sharePrefService.logOutCurrentuserSf();
-              },
-              icon: Icon(Icons.person)),
+          // IconButton(
+          //     onPressed: () {
+          //       sharePrefService.updateBoolSp();
+          //       sharePrefService.logOutCurrentuserSf();
+          //     },
+          //     icon: Icon(Icons.person)),
         ],
         elevation: 0.0,
       ),

@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:user_side/animations/alertDialogAnimation.dart';
 import 'package:user_side/models/providersData.dart';
@@ -14,345 +16,399 @@ class ServiceProvidersDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   // print(data.serviceprovidersdatas.id);
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  CachedNetworkImage(
-                    imageUrl: data.shopImage,
-                    imageBuilder: (context, imageProvider) => Container(
-                      height: 250,
-                      // width: Screensize.widthMultiplier * 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    placeholder: (context, url) =>
-                        Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) =>
-                        Center(child: Icon(Icons.error)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 200),
-                    child: Center(
-                        child: Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 2),
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage('assets/images/profile.jpg'),
-                                    fit: BoxFit.cover)))),
-                  )
-                ],
-              ),
-              Text(
-                '${data.serviceprovidersdatas.providerFirstName[0].toUpperCase()}${data.serviceprovidersdatas.providerLastName.toLowerCase().substring(1)} ${data.serviceprovidersdatas.providerFirstName[0].toUpperCase()}${data.serviceprovidersdatas.providerLastName.toLowerCase().substring(1)}',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(data.address),
-              SizedBox(
-                height: 5,
-              ),
-              Card(
-                elevation: 5,
-                child: Column(
+    // print(data.serviceprovidersdatas.id);
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Service Provider Detail',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          elevation: 0.0,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Stack(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IconButton(
-                            icon: Icon(
-                              Icons.phone,
-                              color: CustomColors.lightRed,
-                            ),
-                            onPressed: () {}),
-                        OutlinedButton(
-                          onPressed: () {
-                            // openDialogForOffer(context);
-                            Get.to(CreateOfferScreen(providerInfo: data));
-                          },
-                          child: Text(
-                            "Send Offer",
-                            style: TextStyle(color: CustomColors.lightGreen),
+                    CachedNetworkImage(
+                      imageUrl: data.shopImage,
+                      imageBuilder: (context, imageProvider) => Container(
+                        height: 250,
+                        // width: Screensize.widthMultiplier * 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        IconButton(
-                            icon: Icon(
-                              Icons.message,
-                              color: CustomColors.lightGreen,
-                            ),
-                            onPressed: () {})
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Availability",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.black54),
+                      ),
+                      placeholder: (context, url) =>
+                          Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          Center(child: Icon(Icons.error)),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'From',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(data.whFromTime,
-                                      style: TextStyle(color: Colors.black54)),
-                                  Text(data.whFromTimeType,
-                                      style: TextStyle(color: Colors.black54)),
-                                ],
-                              )
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'To',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(data.whToTime,
-                                      style: TextStyle(color: Colors.black54)),
-                                  Text(data.whToTimeType,
-                                      style: TextStyle(color: Colors.black54)),
-                                ],
-                              )
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Week-Days',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text('${data.wsFrom}-',
-                                      style: TextStyle(color: Colors.black54)),
-                                  Text(data.wsTo,
-                                      style: TextStyle(color: Colors.black54)),
-                                ],
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Statistics",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.black54),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Jobs',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text('4',
-                                  style: TextStyle(color: Colors.black54)),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Rating',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text('4.6',
-                                  style: TextStyle(color: Colors.black54)),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Reviews',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text('3',
-                                  style: TextStyle(color: Colors.black54)),
-                            ],
-                          ),
-                        ],
-                      ),
+                      padding: const EdgeInsets.only(top: 200),
+                      child: Center(
+                          child: Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.white, width: 2),
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/profile.jpg'),
+                                      fit: BoxFit.cover)))),
                     ),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                "Users Reviews",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.black54),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
+                Text(
+                  '${data.serviceprovidersdatas.providerFirstName[0].toUpperCase()}${data.serviceprovidersdatas.providerFirstName.toLowerCase().substring(1)} ${data.serviceprovidersdatas.providerLastName[0].toUpperCase()}${data.serviceprovidersdatas.providerLastName.toLowerCase().substring(1)}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(data.address,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.black54)),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black45,
+                      borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '0${data.serviceprovidersdatas.providerPhoneNumber.substring(3)}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          color: CustomColors.creame),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundImage:
-                            AssetImage('assets/images/profile.jpg'),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('Jobs', style: TextStyle(color: Colors.black54)),
+                          Text(
+                            '${data.offerscollections.length}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                        ],
                       ),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 2),
-                              child: Text(
-                                  'I would highly recommend this seller to anybody looking for a clean job. He does an amazing work, very communicative and very responsive. I am looking forward to work with him again.'),
-                            ),
-                            Row(
-                              children: [
-                                for (int i = 0; i < 4; i++)
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.yellow,
-                                  ),
-                              ],
-                            )
-                          ],
-                        ),
-                      )
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('Rating',
+                              style: TextStyle(color: Colors.black54)),
+                          Text(
+                            (data.offerscollections.fold(
+                                            0,
+                                            (sum, element) =>
+                                                sum + element.userRating) /
+                                        data.offerscollections.length)
+                                    .isNaN
+                                ? '0.0'
+                                : '${data.offerscollections.fold(0, (sum, element) => sum + element.userRating) / data.offerscollections.length}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('Reviews',
+                              style: TextStyle(color: Colors.black54)),
+                          Text(
+                            getCount().toString() == '0'
+                                ? "0"
+                                : getCount().toString(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                SizedBox(
+                  height: 5,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
                     children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundImage:
-                            AssetImage('assets/images/profile.jpg'),
-                      ),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      Card(
+                        color: CustomColors.lightGreen,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 2),
+                            IconButton(
+                                icon: Icon(
+                                  Icons.phone,
+                                  color: CustomColors.creame,
+                                ),
+                                onPressed: () {
+                                  FlutterPhoneDirectCaller.callNumber(data
+                                      .serviceprovidersdatas
+                                      .providerPhoneNumber);
+                                }),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0))),
+                                  minimumSize: Size(110, 48),
+                                  primary: CustomColors.lightRed),
+                              onPressed: () {
+                                // openDialogForOffer(context);
+                                Get.to(CreateOfferScreen(providerInfo: data));
+                              },
                               child: Text(
-                                  'I would highly recommend this seller to anybody looking for a clean job. He does an amazing work, very communicative and very responsive. I am looking forward to work with him again.'),
+                                "Send Offer",
+                                style: TextStyle(color: CustomColors.creame),
+                              ),
                             ),
-                            Row(
-                              children: [
-                                for (int i = 0; i < 4; i++)
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.yellow,
-                                  ),
-                              ],
-                            )
+                            IconButton(
+                                icon: Icon(
+                                  Icons.message,
+                                  color: CustomColors.creame,
+                                ),
+                                onPressed: () {})
                           ],
                         ),
-                      )
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //     children: [
+                      //       Column(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         crossAxisAlignment: CrossAxisAlignment.center,
+                      //         children: [
+                      //           Text(
+                      //             'From',
+                      //             style: TextStyle(fontWeight: FontWeight.bold),
+                      //           ),
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.start,
+                      //             children: [
+                      //               Text(data.whFromTime,
+                      //                   style:
+                      //                       TextStyle(color: Colors.black54)),
+                      //               Text(data.whFromTimeType,
+                      //                   style:
+                      //                       TextStyle(color: Colors.black54)),
+                      //             ],
+                      //           )
+                      //         ],
+                      //       ),
+                      //       Column(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         crossAxisAlignment: CrossAxisAlignment.center,
+                      //         children: [
+                      //           Text(
+                      //             'To',
+                      //             style: TextStyle(fontWeight: FontWeight.bold),
+                      //           ),
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.center,
+                      //             children: [
+                      //               Text(data.whToTime,
+                      //                   style:
+                      //                       TextStyle(color: Colors.black54)),
+                      //               Text(data.whToTimeType,
+                      //                   style:
+                      //                       TextStyle(color: Colors.black54)),
+                      //             ],
+                      //           )
+                      //         ],
+                      //       ),
+                      //       Column(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         crossAxisAlignment: CrossAxisAlignment.center,
+                      //         children: [
+                      //           Text(
+                      //             'Working Days',
+                      //             style: TextStyle(fontWeight: FontWeight.bold),
+                      //           ),
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.center,
+                      //             children: [
+                      //               Text('${data.wsFrom}-',
+                      //                   style:
+                      //                       TextStyle(color: Colors.black54)),
+                      //               Text(data.wsTo,
+                      //                   style:
+                      //                       TextStyle(color: Colors.black54)),
+                      //             ],
+                      //           )
+                      //         ],
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      data.offerscollections.length == 0
+                          ? Text('')
+                          : Text(
+                              "Reviews",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black54),
+                            ),
                     ],
                   ),
                 ),
-              )
-            ],
+                ListView.builder(
+                    itemCount: data.offerscollections.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              data.offerscollections[index].userReview ==
+                                          'no' &&
+                                      data.offerscollections[index]
+                                              .userRating <=
+                                          0.0
+                                  ? Container(
+                                      height: 0,
+                                      width: 0,
+                                    )
+                                  : CircleAvatar(
+                                      radius: 20,
+                                      backgroundImage: AssetImage(
+                                          'assets/images/profile.jpg'),
+                                    ),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      ' ${data.offerscollections[index].usersregistrationprofiles.firstName[0].toUpperCase()}${data.offerscollections[index].usersregistrationprofiles.firstName.toLowerCase().substring(1)} ${data.offerscollections[index].usersregistrationprofiles.lastName[0].toUpperCase()}${data.offerscollections[index].usersregistrationprofiles.lastName.toLowerCase().substring(1)}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black45),
+                                    ),
+                                    data.offerscollections[index].userRating <=
+                                            0.0
+                                        ? Container(
+                                            height: 0,
+                                            width: 0,
+                                          )
+                                        : Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              RatingBarIndicator(
+                                                rating: data
+                                                    .offerscollections[index]
+                                                    .userRating,
+                                                itemBuilder: (context, index) =>
+                                                    Icon(
+                                                  Icons.star,
+                                                  color: Colors.amber,
+                                                ),
+                                                itemCount: 5,
+                                                itemSize: 20.0,
+                                                direction: Axis.horizontal,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 2),
+                                                child: Text(
+                                                  '  ${data.offerscollections[index].userRating}',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 2),
+                                      child: data.offerscollections[index]
+                                                  .userReview ==
+                                              'no'
+                                          ? Container(
+                                              height: 8,
+                                              width: 0,
+                                            )
+                                          : Text(
+                                              data.offerscollections[index]
+                                                  .userReview,
+                                              style: TextStyle(
+                                                  color: Colors.black54),
+                                            ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-// Future<void> openDialogForOffer(BuildContext context) async {
-//   showGeneralDialog(
-//       context: context,
-//       pageBuilder: (context, anim1, anim2) {},
-//       barrierDismissible: false,
-//       barrierColor: Colors.black.withOpacity(0.4),
-//       barrierLabel: '',
-//       transitionBuilder: (context, anim1, anim2, child) {
-//         return Transform.scale(
-//             scale: anim1.value,
-//             child: AlertDialog(
-//               title: Text('Create Offer'),
-//               content: SingleChildScrollView(
-//                 child: ListBody(
-//                   children: <Widget>[
-//                     Text('Create Offer'),
-//                     Text('Would you like to approve of this message?'),
-//                   ],
-//                 ),
-//               ),
-//               actions: <Widget>[
-//                 TextButton(
-//                   child: Text('Cancel'),
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                 ),
-//               ],
-//             ));
-//       },
-//       transitionDuration: Duration(milliseconds: 200));
-// }
+  int getCount() {
+    int reviewCount = 0;
+    for (int i = 0; i < data.offerscollections.length; i++) {
+      if (data.offerscollections[i].userReview != 'no') {
+        reviewCount++;
+        print("yes");
+      }
+    }
+    return reviewCount;
+  }
 }

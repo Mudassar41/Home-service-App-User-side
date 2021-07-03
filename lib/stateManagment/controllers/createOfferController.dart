@@ -7,5 +7,6 @@ class OfferController extends GetxController {
   var list = ['1', '2', '3', '4', '5'].obs;
   var priceEditController = TextEditingController();
   var desEditController=TextEditingController();
+  var addressController=TextEditingController();
   ProgressDialog progressDialog;
 }
