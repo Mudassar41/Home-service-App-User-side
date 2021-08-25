@@ -59,17 +59,21 @@ class _TasksDetailState extends State<TasksDetail> {
                                   size: 30,
                                 ),
                               ),
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Shop Address',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                    Text('Bosan Road,Multan'),
-                                  ])
+                              Flexible(
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Shop Address',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                      Text(widget
+                                          .tasksModel.providerprofiles.address),
+                                    ]),
+                              )
                             ],
                           ),
                           SizedBox(
@@ -568,6 +572,12 @@ class _TasksDetailState extends State<TasksDetail> {
                           color: CustomColors.lightGreen),
                     ),
                     onPressed: () async {
+                      String response =
+                          await apiServices.addOffersDataToProfile(
+                              widget.tasksModel.id,
+                              widget.tasksModel.providerprofiles.id);
+                      print(response);
+
                       String res = await apiServices.giveRateReviewToProvider(
                           widget.tasksModel.id,
                           tasksProvider.rating,

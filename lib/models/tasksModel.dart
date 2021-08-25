@@ -95,6 +95,7 @@ class Serviceprovidersdatas {
   String providerLastName;
   String providerPhoneNumber;
   String providerPassword;
+  String imageLink;
   int v;
 
   Serviceprovidersdatas({
@@ -103,16 +104,19 @@ class Serviceprovidersdatas {
     this.providerLastName,
     this.providerPhoneNumber,
     this.providerPassword,
+    this.imageLink,
     this.v,
   });
 
   factory Serviceprovidersdatas.fromJson(Map<String, dynamic> json) =>
       Serviceprovidersdatas(
         id: json["_id"],
+        imageLink: json['imageLink'],
         providerFirstName: json["providerFirstName"],
         providerLastName: json["providerLastName"],
         providerPhoneNumber: json["providerPhoneNumber"],
         providerPassword: json["providerPassword"],
         v: json["__v"],
       );
+
 }

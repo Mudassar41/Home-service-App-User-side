@@ -40,13 +40,20 @@ dependencies:
   flutter_grid_delegate_ext: ^0.0.2
   get: ^4.1.4
   firebase_storage: ^8.1.0
+  flutter_local_notifications: ^8.0.0
   uuid: ^3.0.4
+  cloud_firestore: ^2.3.0
   cached_network_image: ^3.0.0
   flutter_rating_bar: ^4.0.0
   geolocator: ^7.1.0
   flutter_phone_direct_caller: ^2.0.0
   image_picker: ^0.7.4
   flutter_svg: ^0.22.0
+  dio: ^4.0.0
+  random_color: ^1.0.5
+  firebase_messaging: ^10.0.3
+  intl: ^0.17.0
+  flutter_chat_bubble: ^1.0.2
 
 dev_dependencies:
   flutter_test:

@@ -5,17 +5,10 @@ import 'package:user_side/models/tasksModel.dart';
 class ProvidersData {
   List<TasksModel> offerscollections;
   String id;
-
   ProviderProfile serviceprovidersdatas;
   Providercategories providercategories;
   String shopImage;
   String address;
-  String whFromTime;
-  String whFromTimeType;
-  String whToTime;
-  String whToTimeType;
-  String wsFrom;
-  String wsTo;
   String longitude;
   String latitude;
   String shopName;
@@ -26,12 +19,6 @@ class ProvidersData {
       this.providercategories,
       this.shopImage,
       this.address,
-      this.whFromTime,
-      this.whFromTimeType,
-      this.whToTime,
-      this.whToTimeType,
-      this.wsFrom,
-      this.wsTo,
       this.longitude,
       this.latitude,
       this.shopName,
@@ -47,12 +34,6 @@ class ProvidersData {
             Providercategories.fromJson(json["providercategories"]),
         shopImage: json["shopImage"],
         address: json["address"],
-        whFromTime: json["whFromTime"],
-        whFromTimeType: json["whFromTimeType"],
-        whToTime: json["whToTime"],
-        whToTimeType: json["whToTimeType"],
-        wsFrom: json["wsFrom"],
-        wsTo: json["wsTo"],
         longitude: json["longitude"],
         latitude: json["latitude"],
         shopName: json["shopName"],
@@ -62,12 +43,6 @@ class ProvidersData {
         id: json["_id"],
         shopImage: json["shopImage"],
         address: json["address"],
-        whFromTime: json["whFromTime"],
-        whFromTimeType: json["whFromTimeType"],
-        whToTime: json["whToTime"],
-        whToTimeType: json["whToTimeType"],
-        wsFrom: json["wsFrom"],
-        wsTo: json["wsTo"],
         longitude: json["longitude"],
         latitude: json["latitude"],
         shopName: json["shopName"],

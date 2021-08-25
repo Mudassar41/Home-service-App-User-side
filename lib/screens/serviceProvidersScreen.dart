@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:user_side/models/providersData.dart';
 import 'package:user_side/stateManagment/controllers/serviceProvidersController.dart';
@@ -12,8 +13,10 @@ import 'dart:math' show cos, sqrt, asin;
 class ServiceProvidersListScreen extends StatelessWidget {
   final double latitude;
   final double longitude;
+  final String categoryName;
 
-  ServiceProvidersListScreen({this.latitude, this.longitude});
+  ServiceProvidersListScreen(
+      {this.latitude, this.longitude, this.categoryName});
 
   final ServiceProviderController controller = Get.find();
 
@@ -24,7 +27,8 @@ class ServiceProvidersListScreen extends StatelessWidget {
     return Scaffold(
       //backgroundColor: Colors.white,
       appBar: AppBar(
-        centerTitle: true,
+        // centerTitle: true,
+
         actions: [
           Row(
             children: [
@@ -102,8 +106,10 @@ class ServiceProvidersListScreen extends StatelessWidget {
                                     flex: 1,
                                     child: CircleAvatar(
                                       radius: 30,
-                                      backgroundImage: AssetImage(
-                                          'assets/images/profile.jpg'),
+                                      backgroundImage: NetworkImage(controller
+                                          .dataList[index]
+                                          .serviceprovidersdatas
+                                          .imageLink),
                                     ),
                                   ),
                                   Expanded(
@@ -134,8 +140,14 @@ class ServiceProvidersListScreen extends StatelessWidget {
                                               size: 15,
                                               color: CustomColors.lightRed,
                                             ),
+                                            // Text(
+                                            //     '${_coordinateDistance(double.parse(controller.dataList[index].latitude), double.parse(controller.dataList[index].longitude), controller.lat.value, controller.lang.value)} Km',
+                                            //     maxLines: 1,
+                                            //     overflow: TextOverflow.ellipsis,
+                                            //     style: TextStyle(
+                                            //         color: Colors.black54)),
                                             Text(
-                                                '${_coordinateDistance(double.parse(controller.dataList[index].latitude), double.parse(controller.dataList[index].longitude), controller.lat.value, controller.lang.value).truncateToDouble()} Km',
+                                                '${(Geolocator.distanceBetween(double.parse(controller.dataList[index].latitude), double.parse(controller.dataList[index].longitude), controller.lat.value, controller.lang.value) / 1000).toStringAsFixed(3)} Km',
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(

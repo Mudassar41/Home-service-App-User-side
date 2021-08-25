@@ -8,17 +8,12 @@ import 'package:user_side/utils/customColors.dart';
 import 'package:user_side/widgets/loadingBar.dart';
 
 class SettingView extends StatelessWidget {
-//  const SettingView({Key key}) : super(key: key);
   final CureentUserController controller = Get.put(CureentUserController());
   SharePrefService sharedPreferences = SharePrefService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: CustomColors.lightGreen,
-        child: Icon(Icons.edit_outlined),
-      ),
       body: Obx(() {
         if (controller.isLoading.value == true) {
           return LoadingBar();

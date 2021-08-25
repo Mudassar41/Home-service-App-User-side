@@ -4,6 +4,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:user_side/models/providersData.dart';
 import 'package:user_side/services/apiServices.dart';
 import 'package:user_side/stateManagment/controllers/createOfferController.dart';
+import 'package:user_side/stateManagment/controllers/currentUserController.dart';
 import 'package:user_side/stateManagment/controllers/serviceProvidersController.dart';
 import 'package:user_side/utils/customColors.dart';
 import 'package:user_side/utils/customToast.dart';
@@ -16,6 +17,8 @@ class CreateOfferScreen extends StatelessWidget {
 
   final OfferController controller = Get.put(OfferController());
   final ServiceProviderController serviceProviderController = Get.find();
+  final CureentUserController cureentUserController =
+      Get.put(CureentUserController());
   ApiServices apiServices = ApiServices();
 
   @override
@@ -171,8 +174,19 @@ class CreateOfferScreen extends StatelessWidget {
                               controller.priceEditController.clear();
                               controller.desEditController.clear();
                               controller.addressController.clear();
+
+                              // String notificationResponse =
+                              //     await apiServices.saveNotificationsToDb(
+                              //         providerInfo.serviceprovidersdatas.id,
+                              //         cureentUserController
+                              //             .userInfo.value.userId,
+                              //         'New Booking request');
+                              apiServices.sendNotificationtoToToken(
+                                  providerInfo.serviceprovidersdatas.deviceToke,
+                                  'offers',
+                                  'Booking Request');
                               FocusScope.of(context).unfocus();
-                              Navigator.pop(context);
+                              Get.back();
                               CustomToast.showToast(response);
                             } else {
                               CustomToast.showToast(response);

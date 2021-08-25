@@ -5,14 +5,18 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:user_side/animations/alertDialogAnimation.dart';
 import 'package:user_side/models/providersData.dart';
+import 'package:user_side/stateManagment/providers/chatProvider.dart';
 import 'package:user_side/utils/customColors.dart';
 
+import 'chatScreen.dart';
 import 'createOffer.dart';
 
 class ServiceProvidersDetailScreen extends StatelessWidget {
   ProvidersData data;
 
   ServiceProvidersDetailScreen({this.data});
+
+  ChatProvider chatController;
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +66,8 @@ class ServiceProvidersDetailScreen extends StatelessWidget {
                                       Border.all(color: Colors.white, width: 2),
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/profile.jpg'),
+                                      image: NetworkImage(
+                                          data.serviceprovidersdatas.imageLink),
                                       fit: BoxFit.cover)))),
                     ),
                   ],
@@ -205,7 +209,14 @@ class ServiceProvidersDetailScreen extends StatelessWidget {
                                   Icons.message,
                                   color: CustomColors.creame,
                                 ),
-                                onPressed: () {})
+                                onPressed: () {
+                                  Get.to(ChatScreen(
+                                      providerId: data.serviceprovidersdatas.id,
+                                      providerFname: data.serviceprovidersdatas
+                                          .providerFirstName,
+                                      providerLname: data.serviceprovidersdatas
+                                          .providerLastName));
+                                })
                           ],
                         ),
                       ),
@@ -286,7 +297,7 @@ class ServiceProvidersDetailScreen extends StatelessWidget {
                       SizedBox(
                         height: 5,
                       ),
-                      data.offerscollections.length == 0
+                      data.offerscollections.length <= 0
                           ? Text('')
                           : Text(
                               "Reviews",
@@ -319,8 +330,10 @@ class ServiceProvidersDetailScreen extends StatelessWidget {
                                     )
                                   : CircleAvatar(
                                       radius: 20,
-                                      backgroundImage: AssetImage(
-                                          'assets/images/profile.jpg'),
+                                      backgroundImage: NetworkImage(data
+                                          .offerscollections[index]
+                                          .usersregistrationprofiles
+                                          .userImage),
                                     ),
                               Flexible(
                                 child: Column(

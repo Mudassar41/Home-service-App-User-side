@@ -76,12 +76,14 @@ class CureentUserController extends GetxController {
     //setState(() {
     if (pickedFile != null) {
       image = File(pickedFile.path);
+      Navigator.of(context).pop();
+      updateImage(image, oldImageLink.value);
     } else {
       print('No image selected.');
+      Navigator.of(context).pop();
     }
     // });
-    Navigator.of(context).pop();
-    updateImage(image, oldImageLink.value);
+
   }
 
   Future getImageGallery(BuildContext context) async {
@@ -90,12 +92,14 @@ class CureentUserController extends GetxController {
     // setState(() {
     if (pickedFile != null) {
       image = File(pickedFile.path);
+      Navigator.of(context).pop();
+      updateImage(image, oldImageLink.value);
     } else {
       print('No image selected.');
+      Navigator.of(context).pop();
     }
     //  });
-    Navigator.of(context).pop();
-    updateImage(image, oldImageLink.value);
+
   }
 
   updateImage(File image, String oldImageLink) async {
@@ -142,7 +146,11 @@ class CureentUserController extends GetxController {
       String url = await firebaseStorageRef.getDownloadURL();
       if (url != null) {
         print(url);
-        apiServices.updateProfileImage(url, userInfo.value.userId);
+        String res =
+            await apiServices.updateProfileImage(url, userInfo.value.userId);
+        if (res == 'data updated') {
+          getCurrentUserInfo();
+        }
       }
     });
   }

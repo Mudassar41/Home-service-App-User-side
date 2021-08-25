@@ -12,7 +12,6 @@ import 'package:user_side/utils/sizing.dart';
 import 'package:user_side/widgets/loadingBar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:user_side/stateManagment/controllers/serviceProvidersController.dart';
-
 import '../serviceProvidersScreen.dart';
 
 class HomeView extends StatefulWidget {
@@ -55,9 +54,7 @@ class _HomeViewState extends State<HomeView>
   }
 
   Widget category() {
-    return Column(
-
-        children: [
+    return Column(children: [
       Padding(
         padding: const EdgeInsets.only(left: 15, right: 15, top: 8, bottom: 8),
         child: Align(
@@ -165,10 +162,14 @@ class _HomeViewState extends State<HomeView>
                               serviceProviderController.lang.value = lan;
                               serviceProviderController.update();
                               // getProvidercurrentlocation();
-                              print(serviceProviderController.lang.value);
+                              print(
+                                  'longitude ${serviceProviderController.lang.value}');
                               print(serviceProviderController.lat.value);
                               Get.to(ServiceProvidersListScreen(
-                                  latitude: lat, longitude: lan));
+                                  latitude: lat,
+                                  longitude: lan,
+                                  categoryName:
+                                      categoriesList[index].providerCatName));
                             }
                           },
                           child: Container(
@@ -190,7 +191,7 @@ class _HomeViewState extends State<HomeView>
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: Image.network(
-                                    'http://192.168.18.100:4000/${categoriesList[index].providerCatImage}',
+                                    'http://192.168.43.113:4000/${categoriesList[index].providerCatImage}',
                                     height: 50,
                                     width: 50,
                                   ),
@@ -244,7 +245,7 @@ class _HomeViewState extends State<HomeView>
       });
     tempList = [];
     final response =
-        await http.get(Uri.parse('http://192.168.18.100:4000/getCats'));
+        await http.get(Uri.parse('http://192.168.43.113:4000/getCats'));
     if (response.statusCode == 201) {
       var value = jsonDecode(response.body);
       var data = value['data'];

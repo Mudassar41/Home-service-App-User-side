@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:user_side/models/bottomNavItems.dart';
 import 'package:user_side/screens/bottomNavViews/inboxView.dart';
 import 'package:user_side/screens/bottomNavViews/tasksView.dart';
@@ -6,6 +7,7 @@ import 'package:user_side/services/sharedPrefService.dart';
 import 'package:user_side/utils/customColors.dart';
 import 'bottomNavViews/homeView.dart';
 import 'bottomNavViews/settingView.dart';
+import 'notificationScreen.dart';
 
 class NavScreen extends StatefulWidget {
   @override
@@ -37,14 +39,16 @@ class _NavPageState extends State<NavScreen> {
         centerTitle: true,
         title: Text(
           'ProviderLance',
-          style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black45),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black45),
         ),
         actions: [
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.notifications_none_outlined,
-              )),
+          // IconButton(
+          //     onPressed: () {
+          //       Get.to(NotificationScreen());
+          //     },
+          //     icon: Icon(
+          //       Icons.notifications_none_outlined,
+          //     )),
           // IconButton(
           //     onPressed: () {
           //       sharePrefService.updateBoolSp();

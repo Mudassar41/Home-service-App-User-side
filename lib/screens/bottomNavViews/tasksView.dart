@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -30,7 +30,7 @@ class _TasksViewState extends State<TasksView> {
         padding: const EdgeInsets.all(8.0),
         child: Consumer<TasksProvider>(
           builder: (context, items, _) {
-            if (items.tasksList == null) {
+            if (items.isLoading) {
               return Center(child: LoadingBar());
             } else {
               return items.tasksList.length == 0
@@ -75,8 +75,10 @@ class _TasksViewState extends State<TasksView> {
                                     Row(
                                       children: [
                                         CircleAvatar(
-                                          backgroundImage: AssetImage(
-                                              'assets/images/profile.jpg'),
+                                          backgroundImage: NetworkImage(items
+                                              .tasksList[index]
+                                              .serviceprovidersdatas
+                                              .imageLink),
                                         ),
                                         Container(
                                           width: 10,
@@ -166,6 +168,7 @@ class _TasksViewState extends State<TasksView> {
                                                   await apiServices.updateTask(
                                                       taskId, 'cancel');
                                               if (response == 'data updated') {
+                                                
                                                 print('Updated');
                                               } else {
                                                 print('Not Updated');
